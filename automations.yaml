@@ -1,0 +1,793 @@
+#- id: car_in_front
+#  alias: Car In Front
+#  trigger:
+#    platform: state
+#    entity_id: sensor.object_detection_front
+#    to: 'Car Detected'
+#  action:
+#    service: notify.ios_seans_iphone_x
+#    data:
+#      title: "House Watch"
+#      message: "There's a Car in Front of the House"
+#      data:
+#        push:
+#          category: camera
+#        entity_id: camera.front
+
+- id: person_in_front
+  alias: Person In Front
+  trigger:
+    platform: state
+    entity_id: sensor.object_detection_front
+    to: 'Person Detected'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "House Watch"
+      message: "There's a Person in Front of the House"
+      data:
+        push:
+          category: camera
+        entity_id: camera.front
+
+- id: person_in_back
+  alias: Person In Back
+  trigger:
+    platform: state
+    entity_id: sensor.object_detection_back
+    to: 'Person Detected'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "House Watch"
+      message: "There's a Person in Back of the House"
+      data:
+        push:
+          category: camera
+        entity_id: camera.back
+
+- id: person_on_left
+  alias: Person On Left
+  trigger:
+    platform: state
+    entity_id: sensor.object_detection_left
+    to: 'Person Detected'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "House Watch"
+      message: "There's a Person on the Left Side of the House"
+      data:
+        push:
+          category: camera
+        entity_id: camera.left
+
+- id: person_on_right
+  alias: Person On Right
+  trigger:
+    platform: state
+    entity_id: sensor.object_detection_right
+    to: 'Person Detected'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "House Watch"
+      message: "There's a Person on the Right Side of the House"
+      data:
+        push:
+          category: camera
+        entity_id: camera.right
+
+- id: bike_day
+  alias: 'Bike Day'
+  trigger:
+    platform: time
+    at: '11:00:00'
+  condition:
+    condition: state
+    entity_id: 'sensor.bike_day'
+    state: 'yes'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "Bike Day"
+      message: "It's a good day to ride your bike to work today!"
+      data:
+        push:
+          category: weather
+        entity_id: weather.openweathermap
+ 
+- id: zone_to_dropdown
+  alias: 'Zone to Dropdown'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+  action:
+    service: input_select.select_option
+    entity_id: input_select.sean_last_zone_dropdown
+    data_template:
+      option: '{{ states.device_tracker.seans_iphone_x.state }}'
+
+- id: at_home
+  alias: 'At Home'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'home'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Home
+      
+- id: left_home
+  alias: 'Left Home'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    from: 'Home'
+    to: 'Away'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Left Home
+
+- id: heading_to_work
+  alias: 'Heading To Work'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        before: '17:00:00'
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+             trigger.from_state.state in ['Home','Billa','Posta'] and
+             trigger.to_state.state in ['ToCenter','ToAndel','ToWineFood','SmichovskeNad'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading to Work
+
+- id: at_work
+  alias: 'At Work'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'Work'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Work
+
+- id: left_work_1
+  alias: 'Left Work 1'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    from: 'Work'
+    to: 'Away'
+  condition:
+    - condition: and
+      conditions:
+        - condition: time
+          after: '18:00:00'
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: 'input_select.sean_last_zone_dropdown'
+          state: 'Work'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Left Work
+      
+- id: heading_home_work_1
+  alias: 'Heading Home From Work 1'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    from: 'Work'
+    to: 'Lazarska'
+  condition:
+    condition: time
+    after: '18:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+      
+- id: heading_home_work_2
+  alias: 'Heading Home From Work 2'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    condition: template
+    value_template: >
+      {{ trigger.from_state is not none and trigger.to_state is not none and
+         trigger.from_state.state in ['Work', 'Lazarska', 'Andel'] and
+         trigger.to_state.state in ['SmichovskeNad', 'WineFood'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: heading_home_from_hornbach
+  alias: 'Heading Home From Hornbach'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    from: 'HornbachP5'
+    to: 'FromHornbachP5'
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: heading_home_from_ikea
+  alias: 'Heading Home From Ikea'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+             trigger.from_state.state in ['Ikea'] and
+             trigger.to_state.state in ['FromP6HomeBackWay', 'FromP6HomeHighway', 'ToP6'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: heading_home_from_hornbach_p6
+  alias: 'Heading Home From Hornbach P6'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+             trigger.from_state.state in ['HornbachP6'] and
+             trigger.to_state.state in ['FromP6HomeBackWay', 'FromP6HomeHighway', 'ToP6', 'FromHornbachP6', 'ToHornbachP6'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: heading_to_andel_from_p6
+  alias: 'Heading Home From P6'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+             trigger.from_state.state in ['Ikea', 'HornbachP6', 'FromP6HomeBackWay', 'FromP6HomeHighway', 'ToP6', 'FromHornbachP6', 'ToHornbachP6'] and
+             trigger.to_state.state in ['ToAndelFromP6'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: heading_home_from_winefood
+  alias: 'Heading Home From WineFood'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+            trigger.from_state.state in ['WineFood'] and
+            trigger.to_state.state in ['SmichovskeNad', 'ToWineFood', 'ToCenter'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+      
+- id: heading_home_from_andel
+  alias: 'Heading Home From Andel'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+            trigger.from_state.state in ['Andel'] and
+            trigger.to_state.state in ['SmichovskeNad', 'ToAndel', 'BioStore', 'ToWineFood', 'ToCenter', 'WineFood'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: to_p6
+  alias: 'To Prague 6'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+            trigger.from_state.state in ['Home','Driving','Posta','Billa'] and
+            trigger.to_state.state in ['ToP6','FromP6HomeBackWay','FromP6HomeHighway'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Home
+
+- id: heading_home_1
+  alias: 'Almost Home 1'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    to: 'ToCenter'
+  condition:
+    condition: state
+    entity_id: 'input_select.sean_location_dropdown'
+    state: 'Heading Home'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Almost Home
+      
+- id: to_center_1
+  alias: 'Heading Towards Center'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    from: 'Home'
+    to: 'ToCenter'
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading Towards Center
+
+- id: to_winefood_1
+  alias: 'Heading To WineFood'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    from: 'ToCenter'
+    to: 'ToWineFood'
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading to WineFood
+
+- id: to_andel
+  alias: 'Heading To Andel'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    from: 'ToCenter'
+    to: 'ToAndel'
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading to Andel
+
+- id: to_hornbach_p5
+  alias: 'Heading To Hornbach'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+    from: 'ToCenter'
+    to: 'ToHornbachP5'
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading to Hornbach
+
+- id: at_andel
+  alias: 'At Andel'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'Andel'
+    for:
+      minutes: 3
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Andel
+
+- id: at_winefood
+  alias: 'At WineFood'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'WineFood'
+    for:
+      minutes: 3
+  condition:
+    condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At WineFood
+      
+- id: at_hornbach
+  alias: 'At Hornbach'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'HornbachP5'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Hornbach
+
+- id: at_hornbach_2
+  alias: 'At Hornbach'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'HornbachP6'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Hornbach
+
+- id: at_billa
+  alias: 'At Billa'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'BIlla'
+    for:
+      minutes: 3
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Billa
+      
+- id: driving
+  alias: 'Driving'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+            trigger.from_state.state in ['Home','Posta','Billa','Ikea','HornbachP6','HornbachP5','Andel'] and
+            trigger.to_state.state in ['Away'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Driving
+
+- id: at_ikea
+  alias: 'At Ikea Zlicin'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'IkeaZlicin'
+    for:
+      minutes: 3
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Ikea
+      
+- id: at_posta
+  alias: 'At Posta'
+  trigger:
+    platform: state
+    entity_id: device_tracker.seans_iphone_x
+    to: 'Posta'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: At Posta
+      
+
+- id: posta_state_change
+  alias: 'Posta state change'
+  trigger:
+    platform: state
+    entity_id: sensor.cp_packages_coming_today
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: 'sensor.cp_packages_coming_today'
+        state: 'delivery'
+      - condition: state
+        entity_id: 'sensor.cp_packages_coming_today'
+        state: 'no_delivery'
+  action:
+    service: variable.set_variable
+    data:
+      variable: posta_variable
+      value_template: "{{ states('sensor.cp_packages_coming_today')}}"
+      attributes_template: >
+        {
+          "from": "{{ state_attr('sensor.cp_packages_coming_today', 'from') }}",
+          "date": "{{ state_attr('sensor.cp_packages_coming_today', 'date') }}",
+          "subject": "{{ state_attr('sensor.cp_packages_coming_today', 'subject') }}",
+          "body": "{{ state_attr('sensor.cp_packages_coming_today', 'body') }}"
+        } 
+        
+- id: posta_variable_reset
+  alias: 'Posta Variable Reset'        
+  trigger:
+    platform: time
+    at: '00:00:01'
+  action:
+    service: variable.set_variable
+    data:
+      variable: posta_variable
+      value: no_delivery
+      attributes:
+        from: ''
+        date: ''
+        subject: ''
+        body: ''
+        icon: mdi:delivery
+
+- id: dpd_state_change
+  alias: 'DPD state change'
+  trigger:
+    platform: state
+    entity_id: sensor.dpd_packages_coming_today
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: 'sensor.dpd_packages_coming_today'
+        state: 'delivery'
+      - condition: state
+        entity_id: 'sensor.dpd_packages_coming_today'
+        state: 'no_delivery'
+  action:
+    service: variable.set_variable
+    data:
+      variable: dpd_variable
+      value_template: "{{ states('sensor.dpd_packages_coming_today')}}"
+      attributes_template: >
+        {
+          "from": "{{ state_attr('sensor.dpd_packages_coming_today', 'from') }}",
+          "date": "{{ state_attr('sensor.dpd_packages_coming_today', 'date') }}",
+          "subject": "{{ state_attr('sensor.dpd_packages_coming_today', 'subject') }}",
+          "body": "{{ state_attr('sensor.dpd_packages_coming_today', 'body') }}"
+        }    
+
+- id: dpd_variable_reset
+  alias: 'DPD Variable Reset'        
+  trigger:
+    platform: time
+    at: '00:00:01'
+  action:
+    service: variable.set_variable
+    data:
+      variable: dpd_variable
+      value: no_delivery
+      attributes:
+        from: ''
+        date: ''
+        subject: ''
+        body: ''
+        icon: mdi:delivery
+
+- id: dhl_state_change
+  alias: 'DHL state change'
+  trigger:
+    platform: state
+    entity_id: sensor.dhl_packages_coming_today
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: 'sensor.dhl_packages_coming_today'
+        state: 'delivery'
+      - condition: state
+        entity_id: 'sensor.dhl_packages_coming_today'
+        state: 'no_delivery'
+  action:
+    service: variable.set_variable
+    data:
+      variable: dhl_variable
+      value_template: "{{ states('sensor.dhl_packages_coming_today')}}"
+      attributes_template: >
+        {
+          "from": "{{ state_attr('sensor.dhl_packages_coming_today', 'from') }}",
+          "date": "{{ state_attr('sensor.dhl_packages_coming_today', 'date') }}",
+          "subject": "{{ state_attr('sensor.dhl_packages_coming_today', 'subject') }}",
+          "body": "{{ state_attr('sensor.dhl_packages_coming_today', 'body') }}"
+        }         
+
+- id: dhl_variable_reset
+  alias: 'DHL Variable Reset'        
+  trigger:
+    platform: time
+    at: '00:00:01'
+  action:
+    service: variable.set_variable
+    data:
+      variable: dhl_variable
+      value: no_delivery
+      attributes:
+        from: ''
+        date: ''
+        subject: ''
+        body: ''
+        icon: mdi:delivery
+
+#      
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: cp_packages_coming_today
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - ceskaposta@cpost.cz
+#    - !secret wife_email
+#    value_template: >-
+#      {% if 'Informace o Vaší zásilce' in subject %}
+#        delivery
+#      {% elif 'reset state of package sensor' in subject %}
+#        no_delivery
+#      {% endif %}
+#
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: dpd_packages_coming_today
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - NOREPLY@dpd.cz
+#    - !secret wife_email
+#    value_template: >-
+#      {% if 'Dnes Vám' in subject %}
+#        delivery
+#      {% elif 'reset state of package sensor' in subject %}
+#        no_delivery
+#      {% endif %}
+#
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: dhl_packages_coming_today
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - NoReply.ODD@dhl.com
+#    - !secret wife_email
+#    value_template: >-
+#      {% if 'DHL On Demand Delivery' in subject %}
+#        delivery
+#      {% elif 'reset state of package sensor' in subject %}
+#        no_delivery
+#      {% endif %}

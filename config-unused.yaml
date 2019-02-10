@@ -1,0 +1,173 @@
+switch:
+
+  - platform: command_line
+    switches:
+      mix:
+        friendly_name: Mix
+        command_on: "curl -X PUT !secret itunes_ip:8181/playlists/a-45-star/play"
+        command_off: "curl -X PUT !secret itunes_ip:8181/playlists/a-45-star/play"
+  - platform: command_line
+    switches:
+      jazz:
+        friendly_name: Jazz
+        command_on: "curl -X PUT !secret itunes_ip:8181/playlists/best-jazz/play"
+        command_off: "curl -X PUT !secret itunes_ip:8181/playlists/best-jazz/play"
+  - platform: command_line
+    switches:
+      rock:
+        friendly_name: Rock
+        command_on: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-rock/play"
+        command_off: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-rock/play"
+  - platform: command_line
+    switches:
+      pop:
+        friendly_name: Pop
+        command_on: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-pop/play"
+        command_off: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-pop/play"
+  - platform: command_line
+    switches:
+      black:
+        friendly_name: Black
+        command_on: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-black/play"
+        command_off: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-black/play"
+  - platform: command_line
+    switches:
+      classical:
+        friendly_name: Classical
+        command_on: "curl -X PUT http://!secret itunes_ip:8181/playlists/classical/play"
+        command_off: "curl -X PUT http://!secret itunes_ip:8181/playlists/classical/play"
+  - platform: command_line
+    switches:
+      electronica:
+        friendly_name: Electronica
+        command_on: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-electronica/play"
+        command_off: "curl -X PUT http://!secret itunes_ip:8181/playlists/best-electronica/play"
+  - platform: command_line
+    switches:
+      kids:
+        friendly_name: Kids
+        command_on: "curl -X PUT http://!secret itunes_ip:8181/playlists/kids-english/play"
+        command_off: "curl -X PUT http://!secret itunes_ip:8181/playlists/kids-english/play"
+
+#  - platform: template
+#    switches:
+#      all_speakers:
+#        turn_on:
+#          service: media_player.turn_on
+#          data:
+#            entity_id: 
+#              -  group.all_speakers
+#        turn_off:
+#          service: media_player.turn_off
+#          data:
+#            entity_id: 
+#              - group.all_speakers
+
+camera:
+
+#  - name: Front Outdoor
+#    platform: mjpeg
+#    mjpeg_url: http://!secret front_cam_ip/Streaming/Channels/2/preview
+#    username: !secret uname
+#    password: !secret hass_pass
+#
+#  - name: Right Side Outdoor
+#    platform: mjpeg
+#    mjpeg_url: http://!secret right_cam_ip/Streaming/Channels/2/preview
+#    username: !secret uname
+#    password: !secret hass_pass
+#
+#  - name: Left Side Outdoor
+#    platform: mjpeg
+#    mjpeg_url: http://!secret left_cam_ip/Streaming/Channels/2/preview
+#    username: !secret uname
+#    password: !secret hass_pass
+#
+#  - name: Back Outdoor
+#    platform: mjpeg
+#    mjpeg_url: http://!secret back_cam_ip/Streaming/Channels/2/preview
+#    username: !secret uname
+#    password: !secret hass_pass
+
+#  - platform: generic
+#    name: WeatherGraph
+#    still_image_url: https://www.yr.no/place/Czech_Republic/Prague/Prague/meteogram.svg
+#    content_type: 'image/svg+xml'
+
+
+sensor:
+
+#  - platform: synologydsm
+#    host: !secret synology_ip
+#    port: 5000
+#    ssl: false
+#    username: !secret syn_uname
+#    password: !secret hass_pass
+#    monitored_conditions:
+#      - memory_real_usage
+#      - network_up
+#      - disk_smart_status
+#      - disk_status
+#      - disk_exceed_bad_sector_thr
+#      - disk_below_remain_life_thr
+#      - volume_percentage_used
+#      - volume_disk_temp_avg
+#      - volume_disk_temp_max
+#  - platform: deluge
+#    host: !secret deluge_ip
+#    username: !secret deluge_uname
+#    password: !secret deluge_pw
+#    monitored_variables:
+#      - 'current_status'
+#      - 'download_speed'
+#      - 'upload_speed'
+
+#  - platform: glances
+#    name: xanadu
+#    host: 10.10.10.20
+#    resources:
+#      - 'disk_use_percent'
+#      - 'disk_free'
+#      - 'memory_use_percent'
+
+#  - platform: mqtt
+#    name: "Power Consumption"
+#    state_topic: !secret smappee_state_topic
+#    unit_of_measurement: "W"
+#    value_template: "{{value_json.totalPower}}"
+#    icon: mdi:power-plug
+#
+#  - platform: template
+#    sensors:
+#      current_rate_power_cost_per_day:
+#        friendly_name: "Current Electricity Use"
+#        unit_of_measurement: 'Kč/day'
+#        value_template: "{{ ((states('sensor.power_consumption')|float * 0.01011816)|round())*10 }}"
+
+
+binary_sensor:
+
+  - name: Motion Front of House
+    platform: hikvision
+    host: !secret front_cam_ip
+    username: !secret uname
+    password: !secret hass_pass
+
+  - name: Motion Right Side of House
+    platform: hikvision
+    host: !secret right_cam_ip
+    username: !secret uname
+    password: !secret hass_pass
+
+  - name: Motion Left Side of House
+    platform: hikvision
+    host: !secret left_cam_ip
+    username: !secret uname
+    password: !secret hass_pass
+
+  - name: Motion Back of House
+    platform: hikvision
+    host: !secret back_cam_ip
+    username: !secret uname
+    password: !secret hass_pass
+    
