@@ -27,3 +27,5 @@ home-assistant_v2.db
 life360.conf
 .TemporaryItems
 OZW_Log.txt
+google_calendars.yaml
+._*

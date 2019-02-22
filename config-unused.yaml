@@ -171,3 +171,85 @@ binary_sensor:
     username: !secret uname
     password: !secret hass_pass
     
+history_graph:
+  gr1:
+    name: Entrance Temperatures
+    entities:
+      - climate.entrance
+    hours_to_show: 23
+    refresh: 60
+  gr2:
+    name: Dining Room Temperatures
+    entities:
+      - climate.dining_room
+    hours_to_show: 23
+    refresh: 60
+  gr3:
+    name: Living Room Temperatures
+    entities:
+      - climate.living_room
+    hours_to_show: 23
+    refresh: 60
+  gr4:
+    name: Master Bedroom Temperatures
+    entities:
+      - climate.master_bedroom
+    hours_to_show: 23
+    refresh: 60
+  gr5:
+    name: Master Bath Temperatures
+    entities:
+      - climate.master_bath
+    hours_to_show: 23
+    refresh: 60
+  gr6:
+    name: Master Closet Temperatures
+    entities:
+      - climate.master_closet
+    hours_to_show: 23
+    refresh: 60
+  gr7:
+    name: Office & Library Temperatures
+    entities:
+      - climate.office__library
+    hours_to_show: 23
+    refresh: 60
+  gr8:
+    name: Sebastians Room Temperatures
+    entities:
+      - climate.sebastians_room
+    hours_to_show: 23
+    refresh: 60
+  gr9:
+    name: Sophies Room Temperatures
+    entities:
+      - climate.sophies_room
+    hours_to_show: 23
+    refresh: 60
+  gr10:
+    name: Guest Bedroom Temperatures
+    entities:
+      - climate.guest_bedroom
+    hours_to_show: 23
+    refresh: 60
+  gr11:
+    name: Garage Temperatures
+    entities:
+      - climate.garage
+    hours_to_show: 23
+    refresh: 60
+  gr12:
+    name: Basement Temperatures
+    entities:
+      - climate.basement
+    hours_to_show: 23
+    refresh: 60
+#  gr13:
+#    name: Motion Detection Times
+#    entities:
+#      - binary_sensor.motion_back_of_house_motion
+#      - binary_sensor.motion_front_of_house_motion
+#      - binary_sensor.motion_left_side_of_house_motion
+#      - binary_sensor.motion_right_side_of_house_motion
+#    hours_to_show: 12
+#    refresh: 60

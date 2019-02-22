@@ -35,72 +35,72 @@
     - hourly_summary
     - daily_summary
 
-  - platform: imap_email_content
-    server: imap.gmail.com
-    name: cp_packages_coming_today
-    port: 993
-    username: !secret gmail_uname
-    password: !secret hass_pass
-    senders:
-    - !secret my_email
-    - ceskaposta@cpost.cz
-    - !secret wife_email
-    value_template: >-
-      {% if 'Informace o Vaší zásilce' in subject %}
-        delivery
-      {% elif 'reset state of package sensor' in subject %}
-        no_delivery
-      {% endif %}
-
-  - platform: imap_email_content
-    server: imap.gmail.com
-    name: dpd_packages_coming_today
-    port: 993
-    username: !secret gmail_uname
-    password: !secret hass_pass
-    senders:
-    - !secret my_email
-    - NOREPLY@dpd.cz
-    - !secret wife_email
-    value_template: >-
-      {% if 'Dnes Vám' in subject %}
-        delivery
-      {% elif 'reset state of package sensor' in subject %}
-        no_delivery
-      {% endif %}
-
-  - platform: imap_email_content
-    server: imap.gmail.com
-    name: dhl_packages_coming_today
-    port: 993
-    username: !secret gmail_uname
-    password: !secret hass_pass
-    senders:
-    - !secret my_email
-    - NoReply.ODD@dhl.com
-    - !secret wife_email
-    value_template: >-
-      {% if 'DHL On Demand Delivery' in subject %}
-        delivery
-      {% elif 'reset state of package sensor' in subject %}
-        no_delivery
-      {% endif %}
-
-  - platform: imap_email_content
-    server: imap.gmail.com
-    name: house_electricity
-    port: 993
-    username: !secret gmail_uname
-    password: !secret hass_pass
-    senders:
-    - !secret my_email
-    - no-reply@smartconnect.apc.com
-    value_template: >-
-      {% if 'UPS On Battery' in subject %}
-        power_out
-      {% elif 'Power Restored' in subject %}
-        power_on
-      {% endif %}
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: cp_packages_coming_today
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - ceskaposta@cpost.cz
+#    - !secret wife_email
+#    value_template: >-
+#      {% if 'Informace o Vaší zásilce' in subject %}
+#        delivery
+#      {% elif 'reset state of package sensor' in subject %}
+#        no_delivery
+#      {% endif %}
+#
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: dpd_packages_coming_today
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - NOREPLY@dpd.cz
+#    - !secret wife_email
+#    value_template: >-
+#      {% if 'Dnes Vám' in subject %}
+#        delivery
+#      {% elif 'reset state of package sensor' in subject %}
+#        no_delivery
+#      {% endif %}
+#
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: dhl_packages_coming_today
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - NoReply.ODD@dhl.com
+#    - !secret wife_email
+#    value_template: >-
+#      {% if 'DHL On Demand Delivery' in subject %}
+#        delivery
+#      {% elif 'reset state of package sensor' in subject %}
+#        no_delivery
+#      {% endif %}
+#
+#  - platform: imap_email_content
+#    server: imap.gmail.com
+#    name: house_electricity
+#    port: 993
+#    username: !secret gmail_uname
+#    password: !secret hass_pass
+#    senders:
+#    - !secret my_email
+#    - no-reply@smartconnect.apc.com
+#    value_template: >-
+#      {% if 'UPS On Battery' in subject %}
+#        power_out
+#      {% elif 'Power Restored' in subject %}
+#        power_on
+#      {% endif %}
 
 #  - platform: gtfs
 #    name: transport
@@ -358,6 +358,25 @@
 
   - platform: template
     sensors:
+      sophies_phone_battery:
+        friendly_name: "Sophie's Phone Battery"
+        value_template: >-
+          {% if is_state('sensor.sophies_iphone_6_battery_state', 'Charging') %}
+            Charging
+          {% elif states('sensor.sophies_iphone_6_battery_level')|float < 15 %}
+            "Very Low"
+          {% elif states('sensor.sophies_iphone_6_battery_level')|float < 25 %}
+            Low
+          {% elif states('sensor.sophies_iphone_6_battery_level')|float < 40 %}
+            "Needs Charging"
+          {% elif states('sensor.sophies_iphone_6_battery_level')|float < 70 %}
+            Good
+          {% else %}
+            Charged
+          {% endif %}
+
+  - platform: template
+    sensors:
       closet_window_sensor_1_battery:
         friendly_name: "Closet Window Sensor 1 Battery"
         value_template: >-
@@ -372,7 +391,41 @@
           {% else %}
             Full
           {% endif %}  
-          
+
+  - platform: template
+    sensors:
+      back_door_sensor_battery:
+        friendly_name: "Back Door Sensor Battery"
+        value_template: >-
+          {% if state_attr('zwave.neo_coolcam_doorwindow_detector_2', 'battery_level')|float < 15 %}
+            "Very Low"
+          {% elif state_attr('zwave.neo_coolcam_doorwindow_detector_2', 'battery_level')|float < 25 %}
+            Low
+          {% elif state_attr('zwave.neo_coolcam_doorwindow_detector_2', 'battery_level')|float < 40 %}
+            Medium
+          {% elif state_attr('zwave.neo_coolcam_doorwindow_detector_2', 'battery_level')|float < 70 %}
+            Good
+          {% else %}
+            Full
+          {% endif %}            
+
+  - platform: template
+    sensors:
+      back_door:
+        friendly_name: "Back Door"
+        value_template: >-
+          {% if is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor_2', 'off') %}
+            Closed
+          {% elif is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor_2', 'on') %}
+            Open
+          {% endif %}
+        icon_template: >-
+          {% if is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor_2', 'off') %}
+            mdi:door
+          {% elif is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor_2', 'on') %}
+            mdi:door-open
+          {% endif %}
+
   - platform: template
     sensors:
       seans_phone_battery:
@@ -410,14 +463,14 @@
     region: 'EU'
     name: Sophie Driving Time to Home
  
-  - platform: google_travel_time
-    api_key: !secret google_travel_key
-    origin: device_tracker.seans_iphone_x
-    destination: zone.home
-    name: Sean Tram Time to Home
-    options:
-      mode: transit
-      
+#  - platform: google_travel_time
+#    api_key: !secret google_travel_key
+#    origin: device_tracker.seans_iphone_x
+#    destination: zone.home
+#    name: Sean Tram Time to Home
+#    options:
+#      mode: transit
+#      
   - platform: systemmonitor
     name: hassbian
     resources:
@@ -436,23 +489,23 @@
         icon_template: >-
           {% if is_state('input_select.sean_location_dropdown', 'Home') %}
             mdi:home
-          {% elif is_state('input_select.sean_location_dropdown', 'Work') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Work') %}
             mdi:briefcase
-          {% elif is_state('input_select.sean_location_dropdown', 'Andel') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Andel') %}
             mdi:cart
-          {% elif is_state('input_select.sean_location_dropdown', 'WineFood') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At WineFood') %}
             mdi:cart
-          {% elif is_state('input_select.sean_location_dropdown', 'Hornbach') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Hornbach') %}
             mdi:cart
-          {% elif is_state('input_select.sean_location_dropdown', 'Ikea') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Ikea') %}
             mdi:cart
-          {% elif is_state('input_select.sean_location_dropdown', 'Billa') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Billa') %}
             mdi:cart
-          {% elif is_state('input_select.sean_location_dropdown', 'BioStore') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At BioStore') %}
             mdi:cart
-          {% elif is_state('input_select.sean_location_dropdown', 'Posta') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Posta') %}
             mdi:email            
-          {% elif is_state('input_select.sean_location_dropdown', 'Yoga') %}
+          {% elif is_state('input_select.sean_location_dropdown', 'At Yoga') %}
             mdi:human-handsup  
           {% else %}
             mdi:train-car
@@ -530,6 +583,31 @@
       - 'current_status'
       - 'download_speed'
       - 'upload_speed'
+      
+  - platform: template
+    sensors:
+      sean_direction_of_travel:
+        friendly_name: "Sean is Heading"
+        value_template: "{{ state_attr('proximity.sean_home', 'dir_of_travel') }}"
+
+  - platform: template
+    sensors:
+      alena_direction_of_travel:
+        friendly_name: "Alena is Heading"
+        value_template: "{{ state_attr('proximity.alena_home', 'dir_of_travel') }}"
+
+  - platform: template
+    sensors:
+      sophie_direction_of_travel:
+        friendly_name: "Sophie is Heading"
+        value_template: "{{ state_attr('proximity.sophie_home', 'dir_of_travel') }}"
+
+  - platform: template
+    sensors:
+      all_direction_of_travel:
+        friendly_name: "All are Heading"
+        value_template: "{{ state_attr('proximity.all_home', 'dir_of_travel') }}"
+
 
 #  - platform: smartthinq_washer
 #    name: LG_Washer

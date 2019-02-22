@@ -1,19 +1,3 @@
-#- id: car_in_front
-#  alias: Car In Front
-#  trigger:
-#    platform: state
-#    entity_id: sensor.object_detection_front
-#    to: 'Car Detected'
-#  action:
-#    service: notify.ios_seans_iphone_x
-#    data:
-#      title: "House Watch"
-#      message: "There's a Car in Front of the House"
-#      data:
-#        push:
-#          category: camera
-#        entity_id: camera.front
-
 - id: person_in_front
   alias: Person In Front
   trigger:
@@ -198,23 +182,28 @@
     data:
       entity_id: input_select.sean_location_dropdown
       option: Left Work
-      
+
 - id: heading_home_work_1
   alias: 'Heading Home From Work 1'
   trigger:
     platform: state
     entity_id: input_select.sean_last_zone_dropdown
-    from: 'Work'
-    to: 'Lazarska'
   condition:
-    condition: time
-    after: '18:00:00'
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
+    condition: and  
+    conditions:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state is not none and trigger.to_state is not none and
+           trigger.from_state.state in ['Work'] and
+           trigger.to_state.state in ['Andel', 'Lazarska', 'BioStore', 'ToWineFood', 'SmichovskeNad'] }}
+    - condition: time
+      after: '18:00:00'
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
   action:
     service: input_select.select_option
     data:
@@ -230,8 +219,8 @@
     condition: template
     value_template: >
       {{ trigger.from_state is not none and trigger.to_state is not none and
-         trigger.from_state.state in ['Work', 'Lazarska', 'Andel'] and
-         trigger.to_state.state in ['SmichovskeNad', 'WineFood'] }}
+         trigger.from_state.state in ['Work', 'Lazarska', 'Andel', 'BioStore'] and
+         trigger.to_state.state in ['SmichovskeNad', 'WineFood', 'ToAndel', 'ToWineFood', 'ToCenter'] }}
   action:
     service: input_select.select_option
     data:
@@ -411,7 +400,7 @@
       option: Almost Home
       
 - id: to_center_1
-  alias: 'Heading Towards Center'
+  alias: 'Heading To Center'
   trigger:
     platform: state
     entity_id: input_select.sean_last_zone_dropdown
@@ -426,7 +415,30 @@
     service: input_select.select_option
     data:
       entity_id: input_select.sean_location_dropdown
-      option: Heading Towards Center
+      option: Heading To Center
+      
+- id: to_p6
+  alias: 'To Prague 6'
+  trigger:
+    platform: state
+    entity_id: input_select.sean_last_zone_dropdown
+  condition:
+    - condition: and
+      conditions:
+      - condition: time
+        weekday:
+        - sat
+        - sun
+      - condition: template
+        value_template: >
+          {{ trigger.from_state is not none and trigger.to_state is not none and
+            trigger.from_state.state in ['Home'] and
+            trigger.to_state.state in ['ToCenter','ToWineFood','WineFood','SmichovskeNad'] }}
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.sean_location_dropdown
+      option: Heading To P6
 
 - id: to_winefood_1
   alias: 'Heading To WineFood'
@@ -491,10 +503,14 @@
     for:
       minutes: 3
   condition:
-    condition: time
-    weekday:
-    - sat
-    - sun
+    condition: or  
+    conditions:
+    - condition: time
+      weekday:
+      - sat
+      - sun
+    - condition: time
+      after: '19:00:00'
   action:
     service: input_select.select_option
     data:
@@ -549,7 +565,7 @@
   trigger:
     platform: state
     entity_id: device_tracker.seans_iphone_x
-    to: 'BIlla'
+    to: 'Billa'
     for:
       minutes: 3
   action:
@@ -607,7 +623,6 @@
       entity_id: input_select.sean_location_dropdown
       option: At Posta
       
-
 - id: posta_state_change
   alias: 'Posta state change'
   trigger:
@@ -740,6 +755,207 @@
         body: ''
         icon: mdi:delivery
 
+- id: heat_down_open_living_room
+  alias: 'Turn Heat Down In Living Room' 
+  trigger:
+    platform: state
+    entity_id: sensor.back_door
+    to: 'Open'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.living_room
+        temperature: 5
+        
+- id: heat_up_closed_living_room
+  alias: 'Turn Heat Up In Living Room' 
+  trigger:
+    platform: state
+    entity_id: sensor.back_door
+    to: 'Closed'
+  action:
+    - service: climate.set_operation_mode
+      data:
+        entity_id: climate.living_room
+        operation_mode: auto
+        
+- alias: Set dishwasher active when power detected
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    above: 10
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Dirty
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Clean
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Drying
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: Starting Up
+
+- alias: Set dishwasher first rinse
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    above: 1000
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Starting Up
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Clean
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Drying
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Emptying
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: First Rinse
+
+- alias: Set dishwasher wash
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    below: 100
+    for:
+      minutes: 10
+  condition:
+    condition: state
+    entity_id: input_select.dishwasher_status
+    state: First Rinse
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.dishwasher_status
+      option: Washing
+
+- alias: Set dishwasher second rinse
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    above: 100
+  condition:
+    condition: state
+    entity_id: input_select.dishwasher_status
+    state: Washing
+  action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.dishwasher_status
+        option: Final Rinse
+        
+- alias: Set dishwasher finishing up
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    below: 25
+  condition:
+    condition: state
+    entity_id: input_select.dishwasher_status
+    state: Final Rinse
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.dishwasher_status
+      option: Finishing Up
+
+
+- alias: Set dishwasher drying
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    below: 1
+    for:
+      minutes: 10
+  condition:
+    condition: state
+    entity_id: input_select.dishwasher_status
+    state: Finishing Up
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.dishwasher_status
+      option: Drying
+ 
+# Once the dishwasher status has been 'Drying' for 30 minutes, mark the
+# dishwasher as clean
+ 
+- alias: Set dishwasher clean
+  trigger:
+    platform: state
+    entity_id: input_select.dishwasher_status
+    to: Drying
+    for:
+      minutes: 10
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.dishwasher_status
+      option: Clean
+
+- alias: Set dishwasher emptying
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    above: 1
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Clean
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.dishwasher_status
+      option: Emptying
+
+# When the power drops and the dishwasher is Clean or Drying, someone has
+# turned the Dishwasher off and emptied it. We should do this when the state
+# of the Dishwasher is clean or Finishing, just incase someone opens the
+# Dishwasher before the 30 minute timeout has been reached.
+ 
+- alias: Set Dishwasher dirty when power off
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aeotec_zw096_smart_switch_6_power
+    below: 0.01
+    for:
+      minutes: 10
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Clean
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Drying
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Emptying
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.dishwasher_status
+      option: Dirty
+ 
 #      
 #  - platform: imap_email_content
 #    server: imap.gmail.com
@@ -791,3 +1007,18 @@
 #      {% elif 'reset state of package sensor' in subject %}
 #        no_delivery
 #      {% endif %}
+#- id: car_in_front
+#  alias: Car In Front
+#  trigger:
+#    platform: state
+#    entity_id: sensor.object_detection_front
+#    to: 'Car Detected'
+#  action:
+#    service: notify.ios_seans_iphone_x
+#    data:
+#      title: "House Watch"
+#      message: "There's a Car in Front of the House"
+#      data:
+#        push:
+#          category: camera
+#        entity_id: camera.front

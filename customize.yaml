@@ -86,7 +86,7 @@ media_player.sebastians_room_airtunes_speaker:
   friendly_name: Music in Seb’s Room
 media_player.sophies_room_airtunes_speaker:
   friendly_name: Music in Sophie’s Room
-climate._straus_house:
+climate.straus_house:
   friendly_name: Home Temperature Avg.
 climate.basement:
   friendly_name: Basement Temperature
@@ -106,11 +106,11 @@ climate.master_bedroom:
   friendly_name: Master Bedroom Temperature
 climate.master_closet:
   friendly_name: Master Closet Temperature
-climate.office__library:
+climate.office_library:
   friendly_name: Office & Library Temperature
-climate.sebastians_room:
+climate.sebastian_s_room:
   friendly_name: Sebastian's Room Temperature
-climate.sophies_room:
+climate.sophie_s_room:
   friendly_name: Sophie's Room Temperature
 sensor.seans_iphone_x_battery_level:
   friendly_name: Sean's Phone Battery Level
@@ -147,43 +147,9 @@ sensor.dhl_packages_coming_today:
   icon: mdi:truck-delivery
 sensor.bike_day:
   icon: mdi:bike
-sensor.alenas_phone_battery:
-  icon: mdi:battery-60
-sensor.seans_phone_battery:
-  icon: mdi:battery-60
 sensor.house_electricity:
   icon: mdi:flash
   friendly_name: House Electricity
-group.Outdoors:
-  order: 1
-group.Outdoors_Motion_Time:
-  order: 2
-group.Outdoors_Cameras:
-  order: 3
-group.Outdoors_Motion_Current:
-  order: 4
-group.Outdoors_Speakers:
-  order: 5
-group.Outdoors_House_Summary:
-  order: 6
-group.First_Floor:
-  order: 7
-group.Second_Floor:
-  order: 8
-group.Third_Floor:
-  order: 9
-group.Basement:
-  order: 10
-sensor.dark_sky_apparent_temperature:
-  friendly_name: Apparent Temperature
-sensor.dark_sky_cloud_coverage:
-  friendly_name: Cloud Coverage
-sensor.dark_sky_cloud_coverage_0:
-  friendly_name: Cloud Coverage Forecast Tomorrow
-sensor.dark_sky_daytime_high_apparent_temperature_0:
-  friendly_name: High "Feels Like" Temperature Forecast Tomorrow
-sensor.dark_sky_visibility_0:
-  friendly_name: Meters Visibility Forecast Tomorrow
 zwave.neo_coolcam_doorwindow_detector:
   friendly_name: Closet Window Sensor 1
 sensor.neo_coolcam_doorwindow_detector_access_control:
@@ -200,3 +166,59 @@ sensor.neo_coolcam_doorwindow_detector_sourcenodeid:
   hidden: true
 binary_sensor.neo_coolcam_doorwindow_detector_sensor:
   friendly_name: Closet Window Sensor 1
+zwave.neo_coolcam_doorwindow_detector_2:
+  friendly_name: Back Door Detector
+sensor.neo_coolcam_doorwindow_detector_access_control_2:
+  friendly_name: Back Door Sensor Access Control
+  hidden: true
+sensor.neo_coolcam_doorwindow_detector_alarm_level_2:
+  friendly_name: Back Door Sensor Alarm Level
+  hidden: true
+sensor.neo_coolcam_doorwindow_detector_alarm_type_2:
+  friendly_name: Back Door Sensor Alarm Level
+  hidden: true
+sensor.neo_coolcam_doorwindow_detector_sourcenodeid_2:
+  friendly_name: Back Door Sensor Alarm Level
+  hidden: true
+binary_sensor.neo_coolcam_doorwindow_detector_sensor_2:
+  friendly_name: Back Door Sensor 
+sensor.dark_sky_cloud_coverage:
+  friendly_name: Cloud Coverage
+sensor.dark_sky_cloud_coverage_0:
+  friendly_name: Cloud Coverage Forecast Tomorrow
+sensor.dark_sky_daytime_high_apparent_temperature_0:
+  friendly_name: High "Feels Like" Temperature Forecast Tomorrow
+sensor.dark_sky_visibility_0:
+  friendly_name: Meters Visibility Forecast Tomorrow
+sensor.dark_sky_daytime_high_temperature_0:
+  friendly_name: Daily High Temperature Tomorrow
+sensor.dark_sky_overnight_low_temperature_0:
+  friendly_name: Overnight Low Temperature Tomorrow
+sensor.dark_sky_overnight_low_apparent_temperature_0:
+  friendly_name: Low "Feels Like" Temperature Tomorrow
+sensor.dark_sky_apparent_temperature:
+  friendly_name: Current "Feels Like" Temperature
+sensor.dark_sky_precip:
+  friendly_name: Precipitation
+sensor.dark_sky_precip_probability:
+  friendly_name: Chance of Precipitation
+sensor.dark_sky_summary:
+  friendly_name: Current Conditions
+sensor.living_room_nest_protect_battery_health:
+  icon: mdi:battery-60
+sensor.master_bedroom_nest_protect_battery_health:
+  icon: mdi:battery-60
+sensor.kids_room_nest_protect_battery_health:
+  icon: mdi:battery-60
+sensor.basement_nest_protect_battery_health:
+  icon: mdi:battery-60
+sensor.seans_phone_battery:
+  icon: mdi:battery-60
+sensor.alenas_phone_battery:
+  icon: mdi:battery-60
+sensor.closet_window_sensor_1_battery:
+  icon: mdi:battery-60
+sensor.back_door_sensor_battery:
+  icon: mdi:battery-60
+sensor.sophies_phone_battery:
+  icon: mdi:battery-60
