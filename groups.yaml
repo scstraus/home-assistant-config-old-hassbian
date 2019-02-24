@@ -114,38 +114,7 @@
       - sensor.basement_nest_protect_co_status
       - sensor.basement_nest_protect_color_status
       - sensor.basement_nest_protect_smoke_status
-  Climate_First_Floor:
-    name: First Floor Climate
-    entities:
-      - history_graph.entrance_temperatures
-      - history_graph.living_room_temperatures
-      - history_graph.dining_room_temperatures
-  Climate_Second_Floor:
-    name: Second Floor Climate
-    entities:
-      - history_graph.master_bedroom_temperatures
-      - history_graph.master_bath_temperatures
-      - history_graph.master_closet_temperatures
-      - history_graph.office__library_temperatures
-  Climate_Third_Floor:
-    name: Third Floor Climate
-    entities:
-      - history_graph.sophies_room_temperatures
-      - history_graph.sebastians_room_temperatures
-      - history_graph.guest_bedroom_temperatures
-  Climate_Basement:
-    name: Third Floor Basement
-    entities:
-      - history_graph.basement_temperatures
-      - history_graph.garage_temperatures
-  Climate_Detail:
-    view: yes
-    name: Climate Detail
-    entities:
-      - group.Climate_First_Floor
-      - group.Climate_Second_Floor
-      - group.Climate_Third_Floor
-      - group.Climate_Basement
+
   All_Speakers:
     name: All Speakers
     entities:
@@ -161,3 +130,36 @@
       - media_player.sophies_room_airtunes_speaker
       - media_player.sebastians_room_airtunes_speaker
       - media_player.gym_airtunes_speaker
+
+#  Climate_First_Floor:
+#    name: First Floor Climate
+#    entities:
+#      - history_graph.entrance_temperatures
+#      - history_graph.living_room_temperatures
+#      - history_graph.dining_room_temperatures
+#  Climate_Second_Floor:
+#    name: Second Floor Climate
+#    entities:
+#      - history_graph.master_bedroom_temperatures
+#      - history_graph.master_bath_temperatures
+#      - history_graph.master_closet_temperatures
+#      - history_graph.office__library_temperatures
+#  Climate_Third_Floor:
+#    name: Third Floor Climate
+#    entities:
+#      - history_graph.sophies_room_temperatures
+#      - history_graph.sebastians_room_temperatures
+#      - history_graph.guest_bedroom_temperatures
+#  Climate_Basement:
+#    name: Third Floor Basement
+#    entities:
+#      - history_graph.basement_temperatures
+#      - history_graph.garage_temperatures
+#  Climate_Detail:
+#    view: yes
+#    name: Climate Detail
+#    entities:
+#      - group.Climate_First_Floor
+#      - group.Climate_Second_Floor
+#      - group.Climate_Third_Floor
+#      - group.Climate_Basement

@@ -1,7 +1,0 @@
-
-- cal_id: alenaandsean@gmail.com
-  entities:
-  - device_id: alena_and_seans_calendar
-    ignore_availability: true
-    name: Alena and Sean's Calendar
-    track: true
