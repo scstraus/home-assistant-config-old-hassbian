@@ -129,6 +129,7 @@ views:
       - sensor.object_detection_right
       - sensor.object_detection_back
       - sensor.back_door
+      - sensor.closet_window
       - input_select.dishwasher_status
       state_filter:
       - "delivery"
@@ -796,6 +797,13 @@ views:
           mute: true
         group: true     
 
+    - type: entities
+      title: All Speakers
+      entities:
+      - entity: group.all_speakers
+      
+      
+
 #### THIRD TAB ####
 
 
@@ -842,6 +850,10 @@ views:
         entity: climate.dining_room
         step_size: 0.5
         name: false
+
+      - type: entities
+        entities:
+        - automation.dining_room_climate_kid_lock
 
 
     - type: custom:vertical-stack-in-card

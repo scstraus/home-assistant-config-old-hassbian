@@ -35,72 +35,72 @@
     - hourly_summary
     - daily_summary
 
-#  - platform: imap_email_content
-#    server: imap.gmail.com
-#    name: cp_packages_coming_today
-#    port: 993
-#    username: !secret gmail_uname
-#    password: !secret hass_pass
-#    senders:
-#    - !secret my_email
-#    - ceskaposta@cpost.cz
-#    - !secret wife_email
-#    value_template: >-
-#      {% if 'Informace o Vaší zásilce' in subject %}
-#        delivery
-#      {% elif 'reset state of package sensor' in subject %}
-#        no_delivery
-#      {% endif %}
-#
-#  - platform: imap_email_content
-#    server: imap.gmail.com
-#    name: dpd_packages_coming_today
-#    port: 993
-#    username: !secret gmail_uname
-#    password: !secret hass_pass
-#    senders:
-#    - !secret my_email
-#    - NOREPLY@dpd.cz
-#    - !secret wife_email
-#    value_template: >-
-#      {% if 'Dnes Vám' in subject %}
-#        delivery
-#      {% elif 'reset state of package sensor' in subject %}
-#        no_delivery
-#      {% endif %}
-#
-#  - platform: imap_email_content
-#    server: imap.gmail.com
-#    name: dhl_packages_coming_today
-#    port: 993
-#    username: !secret gmail_uname
-#    password: !secret hass_pass
-#    senders:
-#    - !secret my_email
-#    - NoReply.ODD@dhl.com
-#    - !secret wife_email
-#    value_template: >-
-#      {% if 'DHL On Demand Delivery' in subject %}
-#        delivery
-#      {% elif 'reset state of package sensor' in subject %}
-#        no_delivery
-#      {% endif %}
-#
-#  - platform: imap_email_content
-#    server: imap.gmail.com
-#    name: house_electricity
-#    port: 993
-#    username: !secret gmail_uname
-#    password: !secret hass_pass
-#    senders:
-#    - !secret my_email
-#    - no-reply@smartconnect.apc.com
-#    value_template: >-
-#      {% if 'UPS On Battery' in subject %}
-#        power_out
-#      {% elif 'Power Restored' in subject %}
-#        power_on
-#      {% endif %}
+  - platform: imap_email_content
+    server: imap.gmail.com
+    name: cp_packages_coming_today
+    port: 993
+    username: !secret gmail_uname
+    password: !secret hass_pass
+    senders:
+    - !secret my_email
+    - ceskaposta@cpost.cz
+    - !secret wife_email
+    value_template: >-
+      {% if 'Informace o Vaší zásilce' in subject %}
+        delivery
+      {% elif 'reset state of package sensor' in subject %}
+        no_delivery
+      {% endif %}
+
+  - platform: imap_email_content
+    server: imap.gmail.com
+    name: dpd_packages_coming_today
+    port: 993
+    username: !secret gmail_uname
+    password: !secret hass_pass
+    senders:
+    - !secret my_email
+    - NOREPLY@dpd.cz
+    - !secret wife_email
+    value_template: >-
+      {% if 'Dnes Vám' in subject %}
+        delivery
+      {% elif 'reset state of package sensor' in subject %}
+        no_delivery
+      {% endif %}
+
+  - platform: imap_email_content
+    server: imap.gmail.com
+    name: dhl_packages_coming_today
+    port: 993
+    username: !secret gmail_uname
+    password: !secret hass_pass
+    senders:
+    - !secret my_email
+    - NoReply.ODD@dhl.com
+    - !secret wife_email
+    value_template: >-
+      {% if 'DHL On Demand Delivery' in subject %}
+        delivery
+      {% elif 'reset state of package sensor' in subject %}
+        no_delivery
+      {% endif %}
+
+  - platform: imap_email_content
+    server: imap.gmail.com
+    name: house_electricity
+    port: 993
+    username: !secret gmail_uname
+    password: !secret hass_pass
+    senders:
+    - !secret my_email
+    - no-reply@smartconnect.apc.com
+    value_template: >-
+      {% if 'UPS On Battery' in subject %}
+        power_out
+      {% elif 'Power Restored' in subject %}
+        power_on
+      {% endif %}
 
 #  - platform: gtfs
 #    name: transport
@@ -424,6 +424,23 @@
             mdi:door
           {% elif is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor_2', 'on') %}
             mdi:door-open
+          {% endif %}
+
+  - platform: template
+    sensors:
+      closet_window:
+        friendly_name: "Closet Window"
+        value_template: >-
+          {% if is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor', 'off') %}
+            Closed
+          {% elif is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor', 'on') %}
+            Open
+          {% endif %}
+        icon_template: >-
+          {% if is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor', 'off') %}
+            mdi:window-closed
+          {% elif is_state('binary_sensor.neo_coolcam_doorwindow_detector_sensor', 'on') %}
+            mdi:window-open
           {% endif %}
 
   - platform: template

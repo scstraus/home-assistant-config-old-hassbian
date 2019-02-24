@@ -692,8 +692,8 @@
           "date": "{{ state_attr('sensor.dpd_packages_coming_today', 'date') }}",
           "subject": "{{ state_attr('sensor.dpd_packages_coming_today', 'subject') }}",
           "body": "{{ state_attr('sensor.dpd_packages_coming_today', 'body') }}"
-        }    
-
+        }   
+        
 - id: dpd_variable_reset
   alias: 'DPD Variable Reset'        
   trigger:
@@ -737,7 +737,6 @@
           "subject": "{{ state_attr('sensor.dhl_packages_coming_today', 'subject') }}",
           "body": "{{ state_attr('sensor.dhl_packages_coming_today', 'body') }}"
         }         
-
 - id: dhl_variable_reset
   alias: 'DHL Variable Reset'        
   trigger:
@@ -783,7 +782,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.aeotec_zw096_smart_switch_6_power
-    above: 10
+    above: 20
   condition:
     condition: or
     conditions:
@@ -876,13 +875,13 @@
       option: Finishing Up
 
 
-- alias: Set dishwasher drying
+- alias: Set dishwasher clean
   trigger:
     platform: numeric_state
     entity_id: sensor.aeotec_zw096_smart_switch_6_power
     below: 1
     for:
-      minutes: 10
+      minutes: 2
   condition:
     condition: state
     entity_id: input_select.dishwasher_status
@@ -891,29 +890,18 @@
     service: input_select.select_option
     data:
       entity_id: input_select.dishwasher_status
-      option: Drying
+      option: Clean
  
 # Once the dishwasher status has been 'Drying' for 30 minutes, mark the
 # dishwasher as clean
- 
-- alias: Set dishwasher clean
-  trigger:
-    platform: state
-    entity_id: input_select.dishwasher_status
-    to: Drying
-    for:
-      minutes: 10
-  action:
-    service: input_select.select_option
-    data:
-      entity_id: input_select.dishwasher_status
-      option: Clean
 
 - alias: Set dishwasher emptying
   trigger:
     platform: numeric_state
     entity_id: sensor.aeotec_zw096_smart_switch_6_power
-    above: 1
+    below: 0.01
+    for:
+      minutes: 2
   condition:
     condition: or
     conditions:
@@ -955,6 +943,18 @@
     data:
       entity_id: input_select.dishwasher_status
       option: Dirty
+      
+- id: dining_room_climate_kid_lock
+  alias: 'Dining Room Climate Kid Lock'
+  trigger:
+    platform: state
+    entity_id: climate.dining_room
+    to: 'manual'
+  action:
+    service: climate.set_operation_mode
+    data:
+      entity_id: climate.dining_room
+      operation_mode: auto
  
 #      
 #  - platform: imap_email_content
