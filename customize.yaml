@@ -7,8 +7,6 @@ sensor.us_main_pollutant:
 sun.sun:
   friendly_name: Sun
   hidden: true
-climate.straus_house:
-  friendly_name: House Temperature
 media_player.itunes:
   friendly_name: Music
 binary_sensor.home_away:
@@ -18,6 +16,7 @@ binary_sensor.living_room_nest_protect_online:
   friendly_name: 1st Floor Smoke Detector Status
 sensor.living_room_nest_protect_battery_health:
   friendly_name: 1st Floor Smoke Detector Battery
+  icon: mdi:battery-60
 sensor.living_room_nest_protect_co_status:
   friendly_name: 1st Floor CO2 Level
 sensor.living_room_nest_protect_color_status:
@@ -29,6 +28,7 @@ binary_sensor.master_bedroom_nest_protect_online:
   friendly_name: 2nd Floor Smoke Detector Status
 sensor.master_bedroom_nest_protect_battery_health:
   friendly_name: 2nd Floor Smoke Detector Battery
+  icon: mdi:battery-60
 sensor.master_bedroom_nest_protect_co_status:
   friendly_name: 2nd Floor CO Level
 sensor.master_bedroom_nest_protect_color_status:
@@ -40,6 +40,7 @@ binary_sensor.kids_room_nest_protect_online:
   friendly_name: Sophie's Room Smoke Detector Status
 sensor.kids_room_nest_protect_battery_health:
   friendly_name: Sophie's Room Smoke Detector Battery
+  icon: mdi:battery-60
 sensor.kids_room_nest_protect_co_status:
   friendly_name: Sophie's Room CO Level
 sensor.kids_room_nest_protect_color_status:
@@ -51,6 +52,7 @@ binary_sensor.basement_nest_protect_online:
   friendly_name: Sophie's Room Smoke Detector Status
 sensor.basement_nest_protect_battery_health:
   friendly_name: Basement Smoke Detector Battery
+  icon: mdi:battery-60
 sensor.basement_nest_protect_co_status:
   friendly_name: Basememt CO Level
 sensor.basement_nest_protect_color_status:
@@ -204,14 +206,6 @@ sensor.dark_sky_precip_probability:
   friendly_name: Chance of Precipitation
 sensor.dark_sky_summary:
   friendly_name: Current Conditions
-sensor.living_room_nest_protect_battery_health:
-  icon: mdi:battery-60
-sensor.master_bedroom_nest_protect_battery_health:
-  icon: mdi:battery-60
-sensor.kids_room_nest_protect_battery_health:
-  icon: mdi:battery-60
-sensor.basement_nest_protect_battery_health:
-  icon: mdi:battery-60
 sensor.seans_phone_battery:
   icon: mdi:battery-60
 sensor.alenas_phone_battery:
@@ -222,3 +216,15 @@ sensor.back_door_sensor_battery:
   icon: mdi:battery-60
 sensor.sophies_phone_battery:
   icon: mdi:battery-60
+sensor.last_object_right:
+  friendly_name: "-"
+  icon: none
+sensor.last_object_time_right:
+  friendly_name: "-"
+  icon: none
+sensor.last_object_left:
+  friendly_name: "-"
+  icon: none
+sensor.last_object_time_left:
+  friendly_name: "-"
+  icon: none

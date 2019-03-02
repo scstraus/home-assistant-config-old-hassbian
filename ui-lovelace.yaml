@@ -145,7 +145,7 @@ views:
       show_empty: false      
       
     - type: custom:card-modder
-      report_size: 14
+      report_size: 18
       card:
 
         type: custom:vertical-stack-in-card
@@ -177,12 +177,16 @@ views:
         - sensor.sophie_location
         - sensor.alena_location
 
-    - type: "custom:calendar-card"
-      entities:
-        - calendar.alena_and_seans_calendar
-      name: "Reminders"
-      showProgressBar: false
-      numberOfDays: 3
+
+    - type: custom:card-modder
+      report_size: 8
+      card:
+        type: "custom:calendar-card"
+        entities:
+          - calendar.alena_and_seans_calendar
+        name: "Reminders"
+        showProgressBar: false
+        numberOfDays: 3
       
 #    - type: custom:card-modder
 #      report_size: 100
@@ -199,6 +203,24 @@ views:
 #        camera_image: camera.front_outdoor
         camera_image: camera.front
 
+      - type: horizontal-stack
+        cards:
+        
+
+        - type: picture-glance
+          title: Outdoor - Left
+          aspect_ratio: 9x16
+          entities:
+          - binary_sensor.motion_left
+          camera_image: camera.left
+        
+        - type: picture-glance
+          title: Outdoor - Right 
+          aspect_ratio: 9x16
+          entities:
+          - binary_sensor.motion_right
+          camera_image: camera.right
+
       - type: picture-glance
         title: Outdoor - Back Yard
         aspect_ratio: 16x9
@@ -208,23 +230,23 @@ views:
 #        camera_image: camera.back_outdoor
         camera_image: camera.back
 
-      - type: picture-glance
-        title: Outdoor - Right Side
-        aspect_ratio: 16x9
-        entities:
-#        - binary_sensor.motion_left_side_of_house_motion
-        - binary_sensor.motion_right
-#        camera_image: camera.right_side_outdoor
-        camera_image: camera.right
 
-      - type: picture-glance
-        title: Outdoor - Left Side
-        aspect_ratio: 16x9
-        entities:
-#        - binary_sensor.motion_right_side_of_house_motion
-        - binary_sensor.motion_left
-#        camera_image: camera.left_side_outdoor
-        camera_image: camera.left
+
+
+
+#      - type: picture-glance
+#        title: Outdoor - Right Side
+#        aspect_ratio: 16x9
+#        entities:
+#        - binary_sensor.motion_right
+#        camera_image: camera.right
+#
+#      - type: picture-glance
+#        title: Outdoor - Left Side
+#        aspect_ratio: 16x9
+#        entities:
+#        - binary_sensor.motion_left
+#        camera_image: camera.left
 
 #    - type: history-graph
 #      title: 'Motion Sensor History'
@@ -234,7 +256,7 @@ views:
 #      - binary_sensor.motion_left_side_of_house_motion
 #      - binary_sensor.motion_right_side_of_house_motion
     - type: custom:card-modder
-      report_size: 8
+      report_size: 6
       card:
         type: vertical-stack
         cards:
@@ -536,6 +558,8 @@ views:
           controls: true
           mute: true
         group: true
+
+
 
 #### SECOND TAB ####
 
@@ -851,9 +875,9 @@ views:
         step_size: 0.5
         name: false
 
-      - type: entities
-        entities:
-        - automation.dining_room_climate_kid_lock
+#      - type: entities
+#        entities:
+#        - automation.dining_room_climate_kid_lock
 
 
     - type: custom:vertical-stack-in-card
@@ -1053,6 +1077,47 @@ views:
 #        - binary_sensor.motion_front_of_house_motion
         - binary_sensor.motion_front
 
+#      - type: picture-glance
+#        title: Outdoor - Right Side
+#        aspect_ratio: 16x9
+#        entities:
+#        - binary_sensor.motion_right
+#        camera_image: camera.right
+
+      - type: horizontal-stack
+        cards:
+
+        - type: vertical-stack
+          cards:    
+
+          - type: picture-glance
+            title: Outdoor - Left
+            aspect_ratio: 9x16
+            entities:
+            - binary_sensor.motion_left
+            camera_image: camera.left
+
+          - type: history-graph
+            title: 'Left Motion'
+            entities:
+    #        - binary_sensor.motion_left_side_of_house_motion
+            - binary_sensor.motion_left
+
+        - type: vertical-stack
+          cards:
+
+          - type: picture-glance
+            title: Outdoor - Right 
+            aspect_ratio: 9x16
+            entities:
+            - binary_sensor.motion_right
+            camera_image: camera.right
+
+          - type: history-graph
+            title: 'Right Motion'
+            entities:
+    #        - binary_sensor.motion_right_side_of_house_motion
+            - binary_sensor.motion_right
 
       - type: picture-glance
         title: Outdoor - Back Yard
@@ -1067,34 +1132,9 @@ views:
 #        - binary_sensor.motion_back_of_house_motion
         - binary_sensor.motion_back
 
-      - type: picture-glance
-        title: Outdoor - Right Side
-        aspect_ratio: 16x9
-        entities:
-        - binary_sensor.motion_right
-        camera_image: camera.right
-
-      - type: history-graph
-        title: 'Right Motion'
-        entities:
-#        - binary_sensor.motion_right_side_of_house_motion
-        - binary_sensor.motion_right
-
-
-      - type: picture-glance
-        title: Outdoor - Left Side
-        aspect_ratio: 16x9
-        entities:
-        - binary_sensor.motion_left
-        camera_image: camera.left
-
-      - type: history-graph
-        title: 'Left Motion'
-        entities:
-#        - binary_sensor.motion_left_side_of_house_motion
-        - binary_sensor.motion_left
 
 # object detection (tensorflow)
+
 
       - type: custom:vertical-stack-in-card
         cards:
@@ -1118,49 +1158,53 @@ views:
           entities:           
           - sensor.last_object_back
           - sensor.last_object_time_back
-          
-      - type: custom:vertical-stack-in-card
-        cards:          
 
-        - type: picture-glance
-          title: Left Last Object Detected
-          entities:
-          - sensor.object_detection_left
-          camera_image: camera.last_object_detected_left
-
-        - type: history-graph
-          title: 'Left Object Detection'
-          entities:
-          - sensor.object_detection_left
-  #        - sensor.tensorflow_summary_left
-
-        - type: entities
-          title: 
-          show_header_toggle: false
-          entities:
-          - sensor.last_object_left
-          - sensor.last_object_time_left
-
-      - type: custom:vertical-stack-in-card
+      - type: horizontal-stack
         cards:
+          
+        - type: custom:vertical-stack-in-card
+          cards:          
 
-        - type: picture-glance
-          title: Right Last Object Detected
-          entities:
-          - sensor.object_detection_right
-          camera_image: camera.last_object_detected_right
+          - type: picture-glance
+            title: Left Last Object Detected
+            entities:
+            - sensor.object_detection_left
+            camera_image: camera.last_object_detected_left
 
-        - type: history-graph
-          title: 'Right Object Detection'
-          entities:
-          - sensor.object_detection_right
-#          - sensor.tensorflow_summary_right
-        - type: entities
-          title: 
-          show_header_toggle: false
-          entities:
-          - sensor.last_object_right
-          - sensor.last_object_time_right
+          - type: history-graph
+            title: 'Detection Left'
+            entities:
+            - sensor.object_detection_left
+    #        - sensor.tensorflow_summary_left
+
+          - type: entities
+            title: 
+            show_header_toggle: false
+            entities:
+            - sensor.last_object_left
+            - sensor.last_object_time_left
+
+        - type: custom:vertical-stack-in-card
+          cards:
+
+          - type: picture-glance
+            title: Right Last Object Detected
+            entities:
+            - sensor.object_detection_right
+            camera_image: camera.last_object_detected_right
+
+          - type: history-graph
+            title: 'Detection Right'
+            entities:
+            - sensor.object_detection_right
+  #          - sensor.tensorflow_summary_right
+
+          - type: entities
+            title: 
+            show_header_toggle: false
+            entities:
+            - sensor.last_object_right
+            - sensor.last_object_time_right
 
 
       - type: custom:vertical-stack-in-card
@@ -1185,6 +1229,7 @@ views:
           entities:
           - sensor.last_object_front
           - sensor.last_object_time_front
+
 
 
 #### FIFTH TAB ####

@@ -530,13 +530,94 @@
 
   - platform: template
     sensors:
+      alena_location:
+        friendly_name: "Mama Is:"
+        value_template: >-          
+          {% if is_state('device_tracker.alenas_iphone', 'home') %}
+            Home
+          {% elif is_state('device_tracker.alenas_iphone', 'Andel') %}
+            At Andel
+          {% elif is_state('device_tracker.alenas_iphone', 'WineFood') %}
+            At WineFood
+          {% elif is_state('device_tracker.alenas_iphone', 'Hornbach') %}
+            At Hornbach
+          {% elif is_state('device_tracker.alenas_iphone', 'Ikea') %}
+            At Ikea
+          {% elif is_state('device_tracker.alenas_iphone', 'Billa') %}
+            At Billa
+          {% elif is_state('device_tracker.alenas_iphone', 'BioStore') %}
+            At Bio Store
+          {% elif is_state('device_tracker.alenas_iphone', 'Posta') %}
+            At Posta
+          {% elif is_state('device_tracker.alenas_iphone', 'Yoga') %}
+            At Yoga
+          {% elif is_state('sensor.alena_direction_of_travel', 'away_from') %}
+            Leaving Home
+          {% elif is_state('sensor.alena_direction_of_travel', 'stationary') %}
+            Somewhere
+          {% elif is_state('sensor.alena_direction_of_travel', 'towards') %}
+            Heading Home
+          {% endif %}
+        icon_template: >-
+          {% if is_state('device_tracker.alenas_iphone', 'home') %}
+            mdi:home
+          {% elif is_state('device_tracker.alenas_iphone', 'Andel') %}
+            mdi:cart
+          {% elif is_state('device_tracker.alenas_iphone', 'WineFood') %}
+            mdi:cart
+          {% elif is_state('device_tracker.alenas_iphone', 'Hornbach') %}
+            mdi:cart
+          {% elif is_state('device_tracker.alenas_iphone', 'Ikea') %}
+            mdi:cart
+          {% elif is_state('device_tracker.alenas_iphone', 'Billa') %}
+            mdi:cart
+          {% elif is_state('device_tracker.alenas_iphone', 'BioStore') %}
+            mdi:cart
+          {% elif is_state('device_tracker.alenas_iphone', 'Posta') %}
+            mdi:email
+          {% elif is_state('device_tracker.alenas_iphone', 'Yoga') %}
+            mdi:human-handsup
+          {% elif is_state('sensor.alena_direction_of_travel', 'stationary') %}
+            mdi:help
+          {% else %}
+            mdi:car
+          {% endif %}
+
+
+  - platform: template
+    sensors:
       sophie_location:
-        value_template: '{{ states.device_tracker.sophie.state }}'
         friendly_name: "Sophie Is:"
+        value_template: >-          
+          {% if is_state('device_tracker.sophie', 'home') %}
+            Home
+          {% elif is_state('device_tracker.sophie', 'Andel') %}
+            At Andel
+          {% elif is_state('device_tracker.sophie', 'WineFood') %}
+            At WineFood
+          {% elif is_state('device_tracker.sophie', 'Parklane Valdstejnska') %}
+            At School
+          {% elif is_state('device_tracker.sophie', 'Hornbach') %}
+            At Hornbach
+          {% elif is_state('device_tracker.sophie', 'Ikea') %}
+            At Ikea
+          {% elif is_state('device_tracker.sophie', 'Billa') %}
+            At Billa
+          {% elif is_state('device_tracker.sophie', 'BioStore') %}
+            At Bio Store
+          {% elif is_state('device_tracker.sophie', 'Posta') %}
+            At Posta
+          {% elif is_state('device_tracker.sophie', 'Yoga') %}
+            At Yoga
+          {% elif is_state('sensor.sophie_direction_of_travel', 'away_from') %}
+            Leaving Home
+          {% elif is_state('sensor.sophie_direction_of_travel', 'stationary') %}
+            Somewhere
+          {% elif is_state('sensor.sophie_direction_of_travel', 'towards') %}
+            Heading Home
+          {% endif %}
         icon_template: >-
           {% if is_state('device_tracker.sophie', 'home') %}
-            mdi:home
-          {% elif is_state('device_tracker.sophie', 'Home') %}
             mdi:home
           {% elif is_state('device_tracker.sophie', 'Parklane Valdstejnska') %}
             mdi:school
@@ -546,9 +627,9 @@
             mdi:cart
           {% elif is_state('device_tracker.sophie', 'Hornbach') %}
             mdi:cart
-          {% elif is_state('device_tracker.sophie', 'Billa') %}
-            mdi:cart
           {% elif is_state('device_tracker.sophie', 'Ikea') %}
+            mdi:cart
+          {% elif is_state('device_tracker.sophie', 'Billa') %}
             mdi:cart
           {% elif is_state('device_tracker.sophie', 'BioStore') %}
             mdi:cart
@@ -556,41 +637,75 @@
             mdi:email            
           {% elif is_state('device_tracker.sophie', 'Yoga') %}
             mdi:human-handsup  
+          {% elif is_state('sensor.sophie_direction_of_travel', 'stationary') %}
+            mdi:help
           {% else %}
-            mdi:car
+            mdi:train-car
           {% endif %}
-          
-  - platform: template
-    sensors:
-      alena_location:
-        value_template: '{{ states.device_tracker.alenas_iphone.state }}'
-        friendly_name: "Mama Is:"
-        icon_template: >-
-          {% if is_state('device_tracker.alenas_iphone', 'home') %}
-            mdi:home
-          {% elif is_state('device_tracker.alenas_iphone', 'Home') %}
-            mdi:home
-          {% elif is_state('device_tracker.alenas_iphone', 'Parklane Valdstejnska') %}
-            mdi:school
-          {% elif is_state('device_tracker.alenas_iphone', 'Andel') %}
-            mdi:cart
-          {% elif is_state('device_tracker.alenas_iphone', 'WineFood') %}
-            mdi:cart
-          {% elif is_state('device_tracker.alenas_iphone', 'Hornbach') %}
-            mdi:cart
-          {% elif is_state('device_tracker.alenas_iphone', 'Billa') %}
-            mdi:cart
-          {% elif is_state('device_tracker.alenas_iphone', 'Ikea') %}
-            mdi:cart
-          {% elif is_state('device_tracker.alenas_iphone', 'BioStore') %}
-            mdi:cart
-          {% elif is_state('device_tracker.alenas_iphone', 'Posta') %}
-            mdi:email            
-          {% elif is_state('device_tracker.alenas_iphone', 'Yoga') %}
-            mdi:human-handsup                  
-          {% else %}
-            mdi:car
-          {% endif %}         
+
+#  - platform: template
+#    sensors:
+#      sophie_location:
+#        value_template: '{{ states.device_tracker.sophie.state }}'
+#        friendly_name: "Sophie Is:"
+#        icon_template: >-
+#          {% if is_state('device_tracker.sophie', 'home') %}
+#            mdi:home
+#          {% elif is_state('device_tracker.sophie', 'Home') %}
+#            mdi:home
+#          {% elif is_state('device_tracker.sophie', 'Parklane Valdstejnska') %}
+#            mdi:school
+#          {% elif is_state('device_tracker.sophie', 'Andel') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.sophie', 'WineFood') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.sophie', 'Hornbach') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.sophie', 'Billa') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.sophie', 'Ikea') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.sophie', 'BioStore') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.sophie', 'Posta') %}
+#            mdi:email            
+#          {% elif is_state('device_tracker.sophie', 'Yoga') %}
+#            mdi:human-handsup  
+#          {% else %}
+#            mdi:car
+#          {% endif %}
+#          
+#  - platform: template
+#    sensors:
+#      alena_location:
+#        value_template: '{{ states.device_tracker.alenas_iphone.state }}'
+#        friendly_name: "Mama Is:"
+#        icon_template: >-
+#          {% if is_state('device_tracker.alenas_iphone', 'home') %}
+#            mdi:home
+#          {% elif is_state('device_tracker.alenas_iphone', 'Home') %}
+#            mdi:home
+#          {% elif is_state('device_tracker.alenas_iphone', 'Parklane Valdstejnska') %}
+#            mdi:school
+#          {% elif is_state('device_tracker.alenas_iphone', 'Andel') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.alenas_iphone', 'WineFood') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.alenas_iphone', 'Hornbach') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.alenas_iphone', 'Billa') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.alenas_iphone', 'Ikea') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.alenas_iphone', 'BioStore') %}
+#            mdi:cart
+#          {% elif is_state('device_tracker.alenas_iphone', 'Posta') %}
+#            mdi:email            
+#          {% elif is_state('device_tracker.alenas_iphone', 'Yoga') %}
+#            mdi:human-handsup                  
+#          {% else %}
+#            mdi:car
+#          {% endif %}         
 
   - platform: deluge
     host: !secret deluge_ip

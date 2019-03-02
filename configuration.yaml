@@ -23,7 +23,6 @@ system_health:
 
 http:
 
-  api_password: !secret hass_pass
   ssl_certificate: !secret cer_dir
   ssl_key: !secret key_dir
   base_url: !secret my_host+port
@@ -40,7 +39,6 @@ history:
     domains:
     - calendar
     - history_graph
-    - group
     - media_player
     - switch
     - input_boolean
@@ -90,11 +88,9 @@ recorder:
     domains:
     - calendar
     - history_graph
-    - group
     - media_player
     - switch
     - input_boolean
-    - automation
     entities:
     - sensor.dark_sky_apparent_temperature
     - sensor.dark_sky_cloud_coverage
@@ -401,6 +397,20 @@ camera:
     timeout: 120
 #    verify_ssl: False
 
+  - name: Left Side Outdoor
+    platform: onvif
+    host: !secret left_cam_ip
+    username: !secret uname
+    password: !secret hass_pass
+    extra_arguments: -vf "transpose=2"
+
+  - name: Right Side Outdoor
+    platform: onvif
+    host: !secret right_cam_ip
+    username: !secret uname
+    password: !secret hass_pass
+    extra_arguments: -vf "transpose=2"
+
 google:
              
   client_id: !secret google_email_client_id
@@ -617,7 +627,7 @@ variable:
     
 cast:
   media_player:
-    - host: 10.10.10.17
+    - host: !secret chromecast_ip
     
 #smartthinq:
 #  token: !secret smartthinq_token
