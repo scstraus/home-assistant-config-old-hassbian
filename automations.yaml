@@ -195,7 +195,7 @@
       - condition: template
         value_template: >
           {{ trigger.from_state is not none and trigger.to_state is not none and
-             trigger.from_state.state in ['Home','Billa','Posta'] and
+             trigger.from_state.state in ['home','Billa','Posta'] and
              trigger.to_state.state in ['ToCenter','ToAndel','ToWineFood','SmichovskeNad'] }}
   action:
     service: input_select.select_option
@@ -433,7 +433,7 @@
       - condition: template
         value_template: >
           {{ trigger.from_state is not none and trigger.to_state is not none and
-            trigger.from_state.state in ['Home','Driving','Posta','Billa'] and
+            trigger.from_state.state in ['home','Driving','Posta','Billa'] and
             trigger.to_state.state in ['ToP6','FromP6HomeBackWay','FromP6HomeHighway'] }}
   action:
     service: input_select.select_option
@@ -462,7 +462,7 @@
   trigger:
     platform: state
     entity_id: input_select.sean_last_zone_dropdown
-    from: 'Home'
+    from: 'home'
     to: 'ToCenter'
   condition:
     condition: time
@@ -490,7 +490,7 @@
       - condition: template
         value_template: >
           {{ trigger.from_state is not none and trigger.to_state is not none and
-            trigger.from_state.state in ['Home'] and
+            trigger.from_state.state in ['home'] and
             trigger.to_state.state in ['ToCenter','ToWineFood','WineFood','SmichovskeNad'] }}
   action:
     service: input_select.select_option
@@ -1034,6 +1034,32 @@
     data:
       title: "Alena's Home"
       message: "Alena's Almost Arrived"
+
+- id: power_out
+  alias: Power is out
+  trigger:
+    platform: state
+    entity_id: sensor.house_electricity
+    to: 'power_out'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "Power is Out at Home"
+      message: "There's been a power cut at home. Electricity is now off"
+
+- id: power_restored
+  alias: Power is restored
+  trigger:
+    platform: state
+    entity_id: sensor.house_electricity
+    to: 'power_on'
+  action:
+    service: notify.ios_seans_iphone_x
+    data:
+      title: "Power Restored at Home"
+      message: "Electricity has been powered back on at home"
+
+
 
 #- id: dining_room_climate_kid_lock
 #  alias: 'Dining Room Climate Kid Lock'

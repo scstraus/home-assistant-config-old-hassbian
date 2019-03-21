@@ -44,40 +44,28 @@ history:
     - input_boolean
     - automation
     entities:
-    - sensor.dark_sky_apparent_temperature
-    - sensor.dark_sky_cloud_coverage
     - sensor.dark_sky_cloud_coverage_0
     - sensor.dark_sky_daily_summary
     - sensor.dark_sky_daytime_high_apparent_temperature_0
     - sensor.dark_sky_daytime_high_temperature_0
-    - sensor.dark_sky_dew_point
     - sensor.dark_sky_dew_point_0
     - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_humidity
     - sensor.dark_sky_humidity_0
     - sensor.dark_sky_icon
     - sensor.dark_sky_icon_0
     - sensor.dark_sky_minutely_summary
-    - sensor.dark_sky_nearest_storm_distance
     - sensor.dark_sky_overnight_low_apparent_temperature_0
     - sensor.dark_sky_overnight_low_temperature_0
-    - sensor.dark_sky_ozone
     - sensor.dark_sky_ozone_0
     - sensor.dark_sky_precip
     - sensor.dark_sky_precip_0
-    - sensor.dark_sky_precip_intensity
     - sensor.dark_sky_precip_intensity_0
-    - sensor.dark_sky_precip_probability
     - sensor.dark_sky_precip_probability_0
-    - sensor.dark_sky_pressure
     - sensor.dark_sky_pressure_0
     - sensor.dark_sky_summary
     - sensor.dark_sky_summary_0
-    - sensor.dark_sky_temperature
     - sensor.dark_sky_temperature_0
-    - sensor.dark_sky_visibility
     - sensor.dark_sky_visibility_0
-    - sensor.dark_sky_wind_bearing
     - sensor.dark_sky_wind_bearing_0
     - sensor.dark_sky_wind_gust_0
     - sensor.dark_sky_wind_speed_0
@@ -92,40 +80,28 @@ recorder:
     - switch
     - input_boolean
     entities:
-    - sensor.dark_sky_apparent_temperature
-    - sensor.dark_sky_cloud_coverage
     - sensor.dark_sky_cloud_coverage_0
     - sensor.dark_sky_daily_summary
     - sensor.dark_sky_daytime_high_apparent_temperature_0
     - sensor.dark_sky_daytime_high_temperature_0
-    - sensor.dark_sky_dew_point
     - sensor.dark_sky_dew_point_0
     - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_humidity
     - sensor.dark_sky_humidity_0
     - sensor.dark_sky_icon
     - sensor.dark_sky_icon_0
     - sensor.dark_sky_minutely_summary
-    - sensor.dark_sky_nearest_storm_distance
     - sensor.dark_sky_overnight_low_apparent_temperature_0
     - sensor.dark_sky_overnight_low_temperature_0
-    - sensor.dark_sky_ozone
     - sensor.dark_sky_ozone_0
     - sensor.dark_sky_precip
     - sensor.dark_sky_precip_0
-    - sensor.dark_sky_precip_intensity
     - sensor.dark_sky_precip_intensity_0
-    - sensor.dark_sky_precip_probability
     - sensor.dark_sky_precip_probability_0
-    - sensor.dark_sky_pressure
     - sensor.dark_sky_pressure_0
     - sensor.dark_sky_summary
     - sensor.dark_sky_summary_0
-    - sensor.dark_sky_temperature
     - sensor.dark_sky_temperature_0
-    - sensor.dark_sky_visibility
     - sensor.dark_sky_visibility_0
-    - sensor.dark_sky_wind_bearing
     - sensor.dark_sky_wind_bearing_0
     - sensor.dark_sky_wind_gust_0
     - sensor.dark_sky_wind_speed_0
@@ -493,7 +469,7 @@ input_select:
   sean_last_zone_dropdown:
     name: Sean Last Zone
     options:
-      - Home
+      - home
       - ToAndel
       - Andel
       - Lazarska
@@ -516,7 +492,7 @@ input_select:
       - ToHornbachP6
       - FromHornbachP6
       - HornbachP6
-    initial: Home
+    initial: home
     
   sean_location_dropdown:
     name: Sean Extended Location
